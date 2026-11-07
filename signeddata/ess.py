@@ -21,9 +21,9 @@ __all__ = [
 
 
 def signing_certificate_v2(cert: Certificate) -> Attribute:
-    """Pending behaviour defined by RFC 5035.
+    """Pending behaviour defined by RFC 5035 sec. 3.
 
     Not implemented yet. See the ``ess.signing_certificate_v2()`` row in ROADMAP.md; this
     stub raises on purpose so nothing downstream mistakes it for working code.
     """
-    raise NotImplementedError("signing_certificate_v2() is not implemented: RFC 5035")
+    raise NotImplementedError("signing_certificate_v2() is not implemented: RFC 5035 sec. 3")

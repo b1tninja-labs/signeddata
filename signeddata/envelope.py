@@ -21,9 +21,9 @@ __all__ = [
 
 
 def decrypt(info: ContentInfo, key: PrivateKey) -> bytes:
-    """Pending behaviour defined by RFC 5652.
+    """Pending behaviour defined by RFC 5652 sec. 6.
 
     Not implemented yet. See the ``envelope.decrypt()`` row in ROADMAP.md; this stub
     raises on purpose so nothing downstream mistakes it for working code.
     """
-    raise NotImplementedError("decrypt() is not implemented: RFC 5652")
+    raise NotImplementedError("decrypt() is not implemented: RFC 5652 sec. 6")

@@ -21,9 +21,9 @@ __all__ = [
 
 
 def build_signer_info(key: SigningKey, certs: list, attrs: list) -> SignerInfo:
-    """Pending behaviour defined by RFC 5652.
+    """Pending behaviour defined by RFC 5652 sec. 5.3.
 
     Not implemented yet. See the ``signer.build_signer_info()`` row in ROADMAP.md; this
     stub raises on purpose so nothing downstream mistakes it for working code.
     """
-    raise NotImplementedError("build_signer_info() is not implemented: RFC 5652")
+    raise NotImplementedError("build_signer_info() is not implemented: RFC 5652 sec. 5.3")

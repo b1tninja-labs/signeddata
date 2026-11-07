@@ -21,18 +21,18 @@ __all__ = [
 
 
 def load(raw: bytes) -> ContentInfo:
-    """Pending behaviour defined by RFC 5652.
+    """Pending behaviour defined by RFC 5652 sec. 3.
 
     Not implemented yet. See the ``cms.load()`` row in ROADMAP.md; this stub raises on
     purpose so nothing downstream mistakes it for working code.
     """
-    raise NotImplementedError("load() is not implemented: RFC 5652")
+    raise NotImplementedError("load() is not implemented: RFC 5652 sec. 3")
 
 
 def dump(info: ContentInfo) -> bytes:
-    """Pending behaviour defined by RFC 5652.
+    """Pending behaviour defined by RFC 5652 sec. 3.
 
     Not implemented yet. See the ``cms.dump()`` row in ROADMAP.md; this stub raises on
     purpose so nothing downstream mistakes it for working code.
     """
-    raise NotImplementedError("dump() is not implemented: RFC 5652")
+    raise NotImplementedError("dump() is not implemented: RFC 5652 sec. 3")

@@ -56,7 +56,7 @@ document, which is the honest grain size for a plan. See [docs/rfc-map.md](docs/
 
 - RFC 3161 carries 3 verified errata and is updated by RFC 5816, which adds the SHA-2 identifiers everyone actually uses.
 - RFC 5035 carries 1 verified erratum and updates RFC 2634: a CertID built the 1999 way is SHA-1 bound.
-- Re-check the errata pages for RFC 5652 and RFC 8551 before the M1 freeze rather than trusting what is written here.
+- RFC 5652 carries 2 verified errata and is updated by RFC 8933 (algorithm identifier protection) and RFC 9629 (KEM recipients); RFC 8551 has no errata on file and is updated by RFC 9788 (header protection). Checked with rfclib on 2026-11-07.
 
 ## Module layout
 
@@ -87,7 +87,8 @@ Declared as a floor with no ceiling: the application that installs this library 
 ## Install
 
 ```bash
-git clone https://github.com/b1tninja/signeddata.cd signeddata
+git clone https://github.com/b1tninja/signeddata.git
+cd signeddata
 python -m venv .venv
 source .venv/bin/activate          # Windows: .venv\\Scripts\\Activate.ps1
 pip install -e ".[dev]"

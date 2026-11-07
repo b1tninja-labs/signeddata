@@ -25,11 +25,13 @@ and Windows, plus the suite under `python -O`.
 These are the points where a plausible-looking change makes the project wrong
 rather than merely incomplete.
 
-1. **Roadmap honesty.** Never change a `ROADMAP.md` row from `[ ]` to `[x]` unless
-   the test named in its `Evidence` cell exists and passes. `tests/test_roadmap_rows.py`
-   fails on any row that claims done without a named test, and that check is the
-   reason the roadmap can be trusted. Do not weaken it, skip it, or delete it to
-   get a green run.
+1. **Roadmap honesty.** Never change a `ROADMAP.md` row from `[ ]` to `[ok]` unless
+   the test named in its `Where` cell exists, passes, and would fail if the behaviour
+   regressed. A Where cell marked `(to be written)` names a test nobody has written:
+   write it, then drop the marker in the same commit that flips the row.
+   `tests/test_roadmap_rows.py` checks only that every row names a callable the
+   package defines; it cannot tell a passing test from a missing one, so this rule
+   is the check. Do not weaken that test, skip it, or delete it to get a green run.
 2. **No silent stubs.** Code that is not implemented raises `NotImplementedError`.
    Never return an empty value, an empty collection, or a result object that reports
    success. A protocol library that answers nothing is worse than one that refuses
@@ -48,7 +50,7 @@ rather than merely incomplete.
 
 - RFC 3161 carries 3 verified errata and is updated by RFC 5816, which adds the SHA-2 identifiers everyone actually uses.
 - RFC 5035 carries 1 verified erratum and updates RFC 2634: a CertID built the 1999 way is SHA-1 bound.
-- Re-check the errata pages for RFC 5652 and RFC 8551 before the M1 freeze rather than trusting what is written here.
+- RFC 5652 carries 2 verified errata and is updated by RFC 8933 (algorithm identifier protection) and RFC 9629 (KEM recipients); RFC 8551 has no errata on file and is updated by RFC 9788 (header protection). Checked with rfclib on 2026-11-07.
 
 ## Protocol work
 

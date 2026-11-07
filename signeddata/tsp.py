@@ -21,18 +21,18 @@ __all__ = [
 
 
 def build_request(message_imprint: bytes, nonce: int) -> bytes:
-    """Pending behaviour defined by RFC 3161.
+    """Pending behaviour defined by RFC 3161 sec. 2.4.1.
 
     Not implemented yet. See the ``tsp.build_request()`` row in ROADMAP.md; this stub
     raises on purpose so nothing downstream mistakes it for working code.
     """
-    raise NotImplementedError("build_request() is not implemented: RFC 3161")
+    raise NotImplementedError("build_request() is not implemented: RFC 3161 sec. 2.4.1")
 
 
 def verify_token(token: bytes, request: bytes, roots: list) -> DateTime:
-    """Pending behaviour defined by RFC 3161.
+    """Pending behaviour defined by RFC 3161 sec. 2.4.2.
 
     Not implemented yet. See the ``tsp.verify_token()`` row in ROADMAP.md; this stub
     raises on purpose so nothing downstream mistakes it for working code.
     """
-    raise NotImplementedError("verify_token() is not implemented: RFC 3161")
+    raise NotImplementedError("verify_token() is not implemented: RFC 3161 sec. 2.4.2")

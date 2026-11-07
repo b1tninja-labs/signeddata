@@ -15,15 +15,15 @@ import pytest
 import signeddata as package
 
 SURFACE = [
-    ("cms", "load", "RFC 5652"),
-    ("cms", "dump", "RFC 5652"),
-    ("signer", "build_signer_info", "RFC 5652"),
-    ("ess", "signing_certificate_v2", "RFC 5035"),
-    ("verify", "verify", "RFC 5652"),
-    ("verify", "countersign", "RFC 5652"),
-    ("envelope", "decrypt", "RFC 5652"),
-    ("tsp", "build_request", "RFC 3161"),
-    ("tsp", "verify_token", "RFC 3161"),
+    ("cms", "load", "RFC 5652 sec. 3"),
+    ("cms", "dump", "RFC 5652 sec. 3"),
+    ("signer", "build_signer_info", "RFC 5652 sec. 5.3"),
+    ("ess", "signing_certificate_v2", "RFC 5035 sec. 3"),
+    ("verify", "verify", "RFC 5652 sec. 5.6"),
+    ("verify", "countersign", "RFC 5652 sec. 11.4"),
+    ("envelope", "decrypt", "RFC 5652 sec. 6"),
+    ("tsp", "build_request", "RFC 3161 sec. 2.4.1"),
+    ("tsp", "verify_token", "RFC 3161 sec. 2.4.2"),
     ("policy", "refuse_weak", "design"),
 ]
 
@@ -42,7 +42,10 @@ def test_surface_is_documented(module_name, fn, cite):
     module = importlib.import_module(package.__name__ + "." + module_name)
     target = getattr(module, fn)
     assert target.__doc__, fn + " needs a docstring"
-    assert cite in target.__doc__, fn + " must cite the document that defines it"
+    # Docstrings are wrapped, so a long citation can span a line break; compare words, not layout.
+    assert " ".join(cite.split()) in " ".join(target.__doc__.split()), (
+        fn + " must cite the document that defines it"
+    )
 
 
 @pytest.mark.parametrize(("module_name", "fn", "cite"), SURFACE)

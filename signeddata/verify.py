@@ -23,18 +23,18 @@ __all__ = [
 
 
 def verify(info: ContentInfo, content: bytes, store: TrustStore) -> Verification:
-    """Pending behaviour defined by RFC 5652.
+    """Pending behaviour defined by RFC 5652 sec. 5.6.
 
     Not implemented yet. See the ``verify.verify()`` row in ROADMAP.md; this stub raises
     on purpose so nothing downstream mistakes it for working code.
     """
-    raise NotImplementedError("verify() is not implemented: RFC 5652")
+    raise NotImplementedError("verify() is not implemented: RFC 5652 sec. 5.6")
 
 
 def countersign(info: ContentInfo, signer: int) -> ContentInfo:
-    """Pending behaviour defined by RFC 5652.
+    """Pending behaviour defined by RFC 5652 sec. 11.4.
 
     Not implemented yet. See the ``verify.countersign()`` row in ROADMAP.md; this stub
     raises on purpose so nothing downstream mistakes it for working code.
     """
-    raise NotImplementedError("countersign() is not implemented: RFC 5652")
+    raise NotImplementedError("countersign() is not implemented: RFC 5652 sec. 11.4")
