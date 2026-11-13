@@ -336,3 +336,21 @@ def test_spki_reader_is_asn1cores():
     result = verify_signer(_loaded(spec), spki=bytes(spki))
     assert result.code == "bad-public-key"
     assert "RFC 3279" in (result.reason or "")
+
+
+def test_dsa_parameters_are_read_by_asn1core():
+    """Row `verify.spki_reader`: DSA's Dss-Parms are asn1core's (`asn1core.keys.DsaPublicKey`), so
+    its RFC 3279 sec. 2.3.2 refusal of NULL parameters arrives here, and absent parameters are
+    still this verifier's `unsupported-key` (row `verify.dsa_inherited_parameters`)."""
+    key = b.rsa_key()
+    spec = b.Spec(key, sign=b.pkcs1(key))
+    dsa_oid = bytes.fromhex("06072a8648ce380401")
+    bits = bytes.fromhex("030400020105")  # BIT STRING { 00, INTEGER 5 }
+    null_parameters = bytes.fromhex("3013300b") + dsa_oid + b"\x05\x00" + bits
+    result = verify_signer(_loaded(spec), spki=null_parameters)
+    assert result.code == "bad-public-key"
+    assert "never NULL" in (result.reason or "")
+    absent = bytes.fromhex("30113009") + dsa_oid + bits
+    result = verify_signer(_loaded(spec), spki=absent)
+    assert result.code == "unsupported-key"
+    assert "issuer" in (result.reason or "")

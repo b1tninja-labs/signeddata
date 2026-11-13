@@ -107,7 +107,6 @@ _ID_ED25519 = "1.3.101.112"
 _ID_ED448 = "1.3.101.113"
 
 _ID_EC_PUBLIC_KEY = "1.2.840.10045.2.1"
-_ID_DSA = "1.2.840.10040.4.1"
 # RFC 5480 sec. 2.1.1.1.
 _CURVES = {
     "1.2.840.10045.3.1.7": ("P-256", 32),
@@ -412,9 +411,10 @@ def _read_spki(spki: bytes) -> _Key:
 
     The structure is read by `asn1core.keys.parse_spki` (PORTFOLIO.md section 9 item 15: asn1core is
     the one SPKI reader), which enforces RFC 3279 sec. 2.3.1, RFC 5480 sec. 2.1.1 and 2.2 and RFC
-    8410 sec. 3. What is left here is what a CMS verifier adds on top: the RSASSA-PSS restrictions
-    (RFC 4056 sec. 3), the curves sigwire verifies, and DSA, which asn1core returns undecoded as
-    an `UnknownKey` and whose Dss-Parms (RFC 3279 sec. 2.3.2) are read here.
+    8410 sec. 3, and RFC 3279 sec. 2.3.2 for DSA (Dss-Parms, the INTEGER key, NULL parameters
+    refused). What is left here is what a CMS verifier adds on top: the RSASSA-PSS restrictions
+    (RFC 4056 sec. 3), the curves sigwire verifies, and the refusal of a DSA key whose parameters
+    would come from the issuer, which this verifier does not have.
     """
     try:
         info = asn1core.keys.parse_spki(spki, der=False)
@@ -446,21 +446,14 @@ def _read_spki(spki: bytes) -> _Key:
         if oid in (_ID_ED25519, _ID_ED448):
             return _Key("ed25519" if oid == _ID_ED25519 else "ed448", (key.key,))
         raise _Refused("unsupported-key", f"public key algorithm {oid} does not sign")
-    if oid == _ID_DSA:
-        if parameters is None:
+    if isinstance(key, asn1core.keys.DsaPublicKey):
+        if key.parameters is None:
             raise _Refused(
                 "unsupported-key",
                 "a DSA key without parameters takes them from the issuer, which is not supported",
             )
-        if key.unused_bits:
-            raise _Refused(
-                "bad-public-key", "subjectPublicKey must be a BIT STRING of whole octets"
-            )
-        params = _decode(parameters)
-        if not _is(params, 16, constructed=True) or len(params.children) != 3:
-            raise _Refused("bad-public-key", "Dss-Parms is SEQUENCE { p, q, g }")
-        p, q, g = (_int(c) for c in params.children)
-        return _Key("dsa", (p, q, g, _int(_decode(key.key_bits))))
+        domain = key.parameters
+        return _Key("dsa", (domain.p, domain.q, domain.g, key.y))
     raise _Refused("unsupported-key", f"public key algorithm {oid} is not supported")
 
 
