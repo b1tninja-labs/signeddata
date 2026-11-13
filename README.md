@@ -12,7 +12,7 @@ still raises `NotImplementedError`, and the test suite records that rather than 
 
 **Dependencies.** One, `asn1core`, this workspace's own ASN.1 codec, because CMS is signed DER and the codec has to keep
 the bytes it parsed. It is not on an index yet, so it resolves from the sibling checkout. No third-party package:
-`asn1crypto` is not used, signature arithmetic will come from `sigprim`, and path validation from `pkix`.
+`asn1crypto` is not used, signature arithmetic comes from `sigwire[verify]` (a strict seam over `cryptography`, the optional `verify` extra), and path validation from `pkix`.
 
 signeddata -- CMS and S-MIME that can actually verify
 
@@ -82,7 +82,7 @@ document, which is the honest grain size for a plan. See [docs/rfc-map.md](docs/
 
 ## What it does not do
 
-- an X.509 or PKI stack: certificate path building and validation belong to pkix, and signature arithmetic comes through sigprim
+- an X.509 or PKI stack: certificate path building and validation belong to pkix, and signature arithmetic comes through sigwire[verify]
 - a mail client: this produces and consumes objects, RFC 8551 wrapping is the boundary
 - business rules for any particular e-invoicing or e-delivery profile
 

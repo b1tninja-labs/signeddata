@@ -36,11 +36,19 @@ classifiers = [
 # asn1core is this workspace own ASN.1 codec: CMS is signed DER end to end, so the codec has to keep
 # the bytes it parsed. It is not on an index yet, so it resolves from the sibling checkout, as pkix
 # does. asn1crypto was declared here with no import and no justification, and is removed; nothing
-# third-party is allowed. Signature arithmetic will come through sigprim, path building from pkix.
+# third-party is allowed. Signature arithmetic comes through sigwire[verify] (optional extra), path building from pkix.
 dependencies = ["asn1core"]
 
 [project.optional-dependencies]
+# Signature checking (signeddata.verify) goes through sigwire.verify, a strict seam over the
+# `cryptography` package, which the owner allows for primitives. Not on an index yet, so it
+# resolves from the sibling checkout in tests (`pythonpath`); the base install needs neither.
+verify = ["sigwire[verify]"]
+# Certificate path validation for verify() is pkix's (RFC 5280 sec. 6). Like sigwire it is an
+# unpublished sibling, imported lazily inside verify(), so the base install and cms.load need neither.
+chain = ["pkix"]
 dev = [
+  "cryptography",
   "pytest",
   "pytest-asyncio",
   "pytest-cov",
@@ -74,7 +82,7 @@ include = ["/signeddata/", "/tests/", "/docs/", "/README.md", "/ROADMAP.md", "/C
 [tool.pytest.ini_options]
 testpaths = ["tests"]
 # "../asn1core" resolves the codec from the sibling checkout (see `dependencies`).
-pythonpath = [".", "../asn1core"]
+pythonpath = [".", "../asn1core", "../sigwire", "../pkix"]
 asyncio_mode = "auto"
 addopts = "-ra"
 
@@ -87,7 +95,7 @@ source = ["signeddata"]
 # coverage for the line that raises. Raise this in the commit that implements a
 # milestone, never in a commit that only adds tests, so the number keeps meaning
 # "this behaviour is exercised" rather than "this file was imported".
-fail_under = 75
+fail_under = 77
 show_missing = true
 exclude_lines = [
   "if __name__ == .__main__.:",
@@ -118,7 +126,7 @@ indent-style = "space"
 
 [tool.mypy]
 python_version = "3.12"
-mypy_path = "../asn1core"
+mypy_path = "../asn1core:../sigwire:../pkix"
 warn_unused_ignores = true
 warn_redundant_casts = true
 no_implicit_optional = true

@@ -32,7 +32,18 @@ Status detail, read with rfclib on 2026-11-13:
 | RFC 8951 | updates RFC 7030 | none | sec. 3.2.1 EST cacerts body is the Simple PKI Response in base64 |
 | RFC 5272 | obsolete, by RFC 10002 | 5 verified | cited by RFC 8951 and RFC 7030; read RFC 10002 instead |
 
-Not yet in the spine, to check before use: RFC 4056 and RFC 5756 (RSA-PSS in CMS), RFC 5758 (ECDSA with SHA-2), RFC 5911 (CMS ASN.1 module), RFC 6211 (CMSAlgorithmProtection).
+Added to the spine 2026-11-13 (read with rfclib, sections named):
+
+| Document | Status | Errata | What this project takes from it |
+|---|---|---|---|
+| RFC 6211 | Proposed Standard, current | 0 verified, 2 reported (9144, 9145: the OID arc) | sec. 2 CMSAlgorithmProtection (signed attribute, one value, one instance), sec. 3.1 the MUST comparison; code accepts the OID the text prints, 1.2.840.113549.1.9.52 |
+| RFC 4056 | Proposed Standard, current | 1 verified, not on sec. 3 | sec. 3: PSS hashAlgorithm equals the signedAttrs digest; the key-parameter comparison |
+| RFC 5753 | Informational, current | 1 verified, not on sec. 2.1 | sec. 2.1.1: ecdsa-with-SHAn hash equals digestAlgorithm; signature is DER ECDSA-Sig-Value |
+| RFC 5480 | Proposed Standard, current | 2 verified, not on sec. 2.1 | sec. 2.1.1 id-ecPublicKey, sec. 2.1.1.1 named curve OIDs (P-256, P-384, P-521) |
+| RFC 8017 | Informational, current | 1 verified on A.2.3 (not read for this use) | appendix A.2.3 RSASSA-PSS-params and defaults, B.2.1 id-mgf1 |
+| RFC 6211 text vs IANA | open | | whether the registry arc is smime(16) aa(2) 52: not checked, `primarysource iana import smi-numbers` downloads it |
+
+Not yet in the spine, to check before use: RFC 5756 (RSA-PSS in CMS, updates 4056), RFC 5758 (ECDSA with SHA-2 OIDs; RFC 5754 sec. 3.3 repeats them), RFC 5911 (CMS ASN.1 module).
 
 Citation rules, in the order they most often get broken:
 

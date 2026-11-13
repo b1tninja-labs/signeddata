@@ -200,7 +200,9 @@ def test_constructed_econtent_is_joined():
     constructed = _tlv(0x24, _tlv(0x04, CONTENT[:10]) + _tlv(0x04, CONTENT[10:]))
     new_encap = _tlv(0x30, encap.children[0].raw + _tlv(0xA0, constructed))
     kids = list(signed.children)
-    kids[2] = asn1core.decode(new_encap, der=True)[0]
+    kids[2] = asn1core.decode(new_encap, der=False)[
+        0
+    ]  # constructed OCTET STRING is BER only (X.690 10.2)
     body = _tlv(0x30, b"".join(k.raw for k in kids))
     data = _tlv(0x30, top.children[0].raw + _tlv(0xA0, body))
     assert cms.load(data).econtent == CONTENT
@@ -216,7 +218,9 @@ def test_non_octet_string_content_is_kept_as_raw():
     seq = _tlv(0x30, _tlv(0x02, b"\x01"))
     new_encap = _tlv(0x30, encap.children[0].raw + _tlv(0xA0, seq))
     kids = list(signed.children)
-    kids[2] = asn1core.decode(new_encap, der=True)[0]
+    kids[2] = asn1core.decode(new_encap, der=False)[
+        0
+    ]  # constructed OCTET STRING is BER only (X.690 10.2)
     body = _tlv(0x30, b"".join(k.raw for k in kids))
     data = _tlv(0x30, top.children[0].raw + _tlv(0xA0, body))
     loaded = cms.load(data)
