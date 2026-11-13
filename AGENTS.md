@@ -54,9 +54,12 @@ rather than merely incomplete.
 3. **Normative text is never paraphrased from memory.** Fetch it with `rfclib` and
    cite the section. If the text you fetch does not say what the obligation claims,
    the obligation is wrong: fix the roadmap row and say so in the commit.
-4. **Dependencies.** `pyproject.toml` here declares these runtime dependencies: asn1crypto 1.5.1. Adding a runtime
-   dependency needs a paragraph of justification in `docs/strategy.md` explaining
-   why the standard library is not enough.
+4. **Dependencies.** `pyproject.toml` declares one runtime dependency, `asn1core`, this workspace's own codec, resolved
+   from the sibling checkout (`pythonpath` and `mypy_path` point at `../asn1core`) because it is not on an index yet.
+   `asn1crypto`, which used to be declared and was never imported, is gone, and no third-party package may come back:
+   CMS parsing is ours on asn1core, signature arithmetic will come from `sigprim`, and certificate path building and
+   validation belong to `pkix`. `tests/test_no_third_party_import.py` enforces it. Adding another runtime dependency
+   needs a paragraph of justification in `docs/strategy.md` explaining why the standard library is not enough.
 5. **Scope.** What is deliberately absent is listed under Non-goals in `README.md`.
    An agent that "helpfully" implements a non-goal has expanded the API surface that
    has to be supported forever.

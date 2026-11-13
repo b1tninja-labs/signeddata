@@ -1,0 +1,10 @@
+Base64 of the binaries in RFC 4134 appendix B (read with rfclib 2026-11-13); '|' column removed, whitespace kept for readability.
+  4.2.b64  section 4.2  basic signed content, RSA        (RFC lines 7135-7157)
+  4.3.b64  section 4.3  detached content                (7158-7191)
+  4.6.b64  section 4.6  multiple signers                (7306-7339)
+  4.7.b64  section 4.7  signing using SKI               (7340-7371)
+  4.10.b64 section 4.10 signed attributes               (7462-7516)
+  4.11.b64 section 4.11 certificates and a CRL only, no content, no signers (7517-7561)
+Each file's decoded length equals the outer SEQUENCE length plus its header; tests/test_cms_load.py checks it.
+RFC 4134 is informational and has one verified erratum (eid 1716, sections 4.8 and 4.9, an e-mail address in MIME headers) that does not touch these binaries.
+The examples use SHA-1 and DSA, which parse fine; they are not valid under the project's default algorithm policy.

@@ -5,10 +5,14 @@
      the badges stay commented out until the tag exists.
 -->
 
-**Pre-alpha shell.** The package surface, the obligation matrix and the CI gates exist.
-No protocol behaviour is implemented: every public function raises `NotImplementedError`,
-and the test suite records that rather than hiding it. Read
+**Pre-alpha.** `cms.load` reads a CMS SignedData (BER or DER) on asn1core and keeps every parsed slice, including
+the certificates-only form that EST `/cacerts` returns (`cms.certificates_only`); it verifies nothing. Everything else
+still raises `NotImplementedError`, and the test suite records that rather than hiding it. Read
 [ROADMAP.md](ROADMAP.md) before depending on any of it.
+
+**Dependencies.** One, `asn1core`, this workspace's own ASN.1 codec, because CMS is signed DER and the codec has to keep
+the bytes it parsed. It is not on an index yet, so it resolves from the sibling checkout. No third-party package:
+`asn1crypto` is not used, signature arithmetic will come from `sigprim`, and path validation from `pkix`.
 
 signeddata -- CMS and S-MIME that can actually verify
 
@@ -51,6 +55,11 @@ document, which is the honest grain size for a plan. See [docs/rfc-map.md](docs/
 | RFC 3370 | Proposed Standard | 2002-09 | CMS algorithm bindings: AES-CBC, HMAC, RSA-OAEP |
 | RFC 9044 | Proposed Standard | 2021-06 | AES-GMAC with CMS |
 | RFC 8702 | Proposed Standard | 2020-01 | SHAKE one-way functions in CMS |
+| RFC 8933 | Proposed Standard | 2020-10 | algorithm identifier protection: one digest algorithm for content and attributes |
+| RFC 5816 | Proposed Standard | 2010-04 | ESSCertIDv2 in timestamp tokens, updating RFC 3161 |
+| RFC 5754 | Proposed Standard | 2010-01 | SHA-2 in CMS, updating RFC 3370 |
+| RFC 8419 | Proposed Standard | 2018-08 | EdDSA signatures in CMS |
+| RFC 4134 | Informational | 2005-07 | example messages, the source of the test binaries |
 
 ### Errata watch
 
@@ -73,7 +82,7 @@ document, which is the honest grain size for a plan. See [docs/rfc-map.md](docs/
 
 ## What it does not do
 
-- an X.509 or PKI stack: certificate path building stays in cryptography
+- an X.509 or PKI stack: certificate path building and validation belong to pkix, and signature arithmetic comes through sigprim
 - a mail client: this produces and consumes objects, RFC 8551 wrapping is the boundary
 - business rules for any particular e-invoicing or e-delivery profile
 
